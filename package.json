@@ -1,0 +1,22 @@
+{
+  "name": "xlsx-core",
+  "version": "1.0.0",
+  "description": "xlsx core for javascript,can use in node or browser.",
+  "main": "xlsxcore.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jifengg/JSXlsxCore.git"
+  },
+  "keywords": [
+    "jsxlsx"
+  ],
+  "author": "jifengg",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/jifengg/JSXlsxCore/issues"
+  },
+  "homepage": "https://github.com/jifengg/JSXlsxCore#readme"
+}
