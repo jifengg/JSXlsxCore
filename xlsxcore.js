@@ -23,6 +23,8 @@
         this.__numberFormatIndex = 176;
         this.__imageIndex = 0;
         this.__hyperlinkIndex = 0;
+        this.__cellFontIndex = 0;
+        this.__cellFillIndex = 0;
     }
 
     /**
@@ -122,6 +124,28 @@
         this.__hyperlinkIndex++;
         var link = new Hyperlink(this.__hyperlinkIndex, url, style);
         return link;
+    }
+
+    /**
+     * 创建一个共用的单元格字体信息，多处使用时可以减少文档体积。
+     * @param {CellFont} data
+     */
+    Book.prototype.CreateShareCellFont = function (data) {
+        var font = new CellFont();
+        font = Object.assign(font, data);
+        font.__id = this.__cellFontIndex++;
+        return font;
+    }
+
+    /**
+     * 创建一个共用的单元格填充信息，多处使用时可以减少文档体积。
+     * @param {CellFill} data
+     */
+    Book.prototype.CreateShareCellFill = function (data) {
+        var fill = new CellFill();
+        fill = Object.assign(fill, data);
+        fill.__id = this.__cellFillIndex++;
+        return fill;
     }
 
     /**
@@ -267,6 +291,36 @@
          */
         this.__id = null;
         /**
+         * 字体
+         * @type {CellFont}
+         */
+        this.Font = null;
+        /**
+         * 填充信息
+         * @type {CellFill}
+         */
+        this.Fill = null;
+        /**
+         * 文字对齐方式
+         * @type {CellAlignment}
+         */
+        this.Alignment = null;
+        /**
+         * 数字显示格式
+         * @type {NumberFormat}
+         */
+        this.Format = null;
+    }
+
+    /**
+     * 单元格中文字的显示字体
+     */
+    function CellFont() {
+        /**
+         * 全局唯一id，自行创建CellFont时不要赋值。推荐使用Book.prototype.CreateShareCellFont来创建样式。
+         */
+        this.__id = null;
+        /**
          * 是否显示为粗体
          * @type {boolean}
          */
@@ -293,24 +347,24 @@
         this.FontSize = null;
         /**
          * 文字颜色
-         * @type {string} FFFFFF字符串格式的颜色码
+         * @type {string|number} FFFFFF字符串格式的颜色码，或者是颜色主题
          */
         this.Color = null;
+    }
+
+    /**
+     * 单元格的填充信息
+     */
+    function CellFill() {
+        /**
+         * 全局唯一id，自行创建CellFill时不要赋值。推荐使用Book.prototype.CreateShareCellFill来创建样式。
+         */
+        this.__id = null;
         /**
          * 背景颜色
          * @type {string} FFFFFF字符串格式的颜色码
          */
         this.BGColor = null;
-        /**
-         * 文字对齐方式
-         * @type {CellAlignment}
-         */
-        this.Alignment = null;
-        /**
-         * 数字显示格式
-         * @type {NumberFormat}
-         */
-        this.Format = null;
     }
 
     /**
@@ -454,6 +508,8 @@
         Cell,
         ShareString,
         CellStyle,
+        CellFont,
+        CellFill,
         CellAlignment,
         NumberFormat,
         Image,
