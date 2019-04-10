@@ -5,17 +5,23 @@
      */
     function Book() {
         /**
-         * 所有的页数据
-         * @type {{[x:string]:Sheet}}
+         * 所有的页数据数组
+         * @type {[Sheet]}
          */
-        this.Sheets = {};
+        this.Sheets = [];
         /**
          * 整个Excel文件中的默认单元格样式
          * @type {CellStyle}
          */
-        this.DefaultCellStyle = Object.assign(new CellStyle(), { FontSize: 11, FontName: '微软雅黑' });
+        this.DefaultCellStyle = Object.assign(new CellStyle(), { Font: { FontSize: 11, FontName: '微软雅黑' } });
 
-        //以下变量为程序所使用的唯一id值，不要在外部进行更改！
+        /**
+         * 按照name存储的所有的页数据
+         * @type {{[x:string]:Sheet}}
+         */
+        this.__sheetNameMap = {};
+
+        //以下变量为程序所使用的唯一id值，不要在外部进行更改！        
 
         this.__sheetIndex = 0;
         this.__cellStyleIndex = 0;
@@ -30,16 +36,25 @@
     /**
      * 创建一个数据页
      * @param {string} name 名称
+     * @param {number} index 下标，数值越小越靠前，不能出现负数。
      * @returns {Sheet}
      */
-    Book.prototype.CreateSheet = function (name) {
+    Book.prototype.CreateSheet = function (name, index) {
         if (this.Sheets[name] != null) {
             throw '已存在同名的sheet。[' + name + ']';
+        }
+        //如果没有设置下标，则默认放到末尾
+        if (index == null) {
+            index = this.Sheets.length;
+        }
+        if (index < 0) {
+            throw 'index不能小于0.';
         }
         this.__sheetIndex++;
         const sheet = new Sheet(name, 'customSheet' + this.__sheetIndex);
         sheet.Book = this;
-        this.Sheets[name] = sheet;
+        this.__sheetNameMap[name] = sheet;
+        this.Sheets.splice(index, 0, sheet);
         return sheet;
     }
 
@@ -49,7 +64,7 @@
      * @returns {Sheet}
      */
     Book.prototype.Sheet = function (name) {
-        return this.Sheets[name];
+        return this.__sheetNameMap[name];
     }
 
     /**

@@ -1,6 +1,6 @@
 {
   "name": "js-xlsx-core",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "xlsx core for javascript,can use in node or browser.",
   "main": "xlsxcore.js",
   "scripts": {
